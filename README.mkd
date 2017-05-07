@@ -43,10 +43,17 @@ file any issues that you may find if documentation/application.
 Using with self-hosted `parse-server`
 -------------
 
-To use the library with self-hosted parse-server, set the environment variable
-`PARSE_API_ROOT` before importing the module.
+To use the library with self-hosted parse-server:
 
-Example:
+~~~~~ {python}
+# the new, easy way
+from parse_rest import connection
+connection.API_ROOT = "http://your_server.com:1337/parse"
+~~~~~
+
+
+Alternatively, you can set the environment variable
+`PARSE_API_ROOT` before importing the module:
 
 ~~~~~ {python}
 import os

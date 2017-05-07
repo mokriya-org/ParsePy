@@ -75,8 +75,14 @@ def date_handler(obj):
     return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 
+class EndpointRootDescriptor(object):
+    def __get__(self, _, cls):
+        return os.path.join(API_ROOT, cls.ENDPOINT_PATH)
+
+
 class ParseBase(object):
-    ENDPOINT_ROOT = API_ROOT
+    ENDPOINT_PATH = ''
+    ENDPOINT_ROOT = EndpointRootDescriptor()
 
     @classmethod
     def execute(cls, uri, http_verb, extra_headers=None, batch=False, _body=None, **kw):
@@ -171,7 +177,7 @@ class ParseBase(object):
 
 class ParseBatcher(ParseBase):
     """Batch together create, update or delete operations"""
-    ENDPOINT_ROOT = '/'.join((API_ROOT, 'batch'))
+    ENDPOINT_PATH = 'batch'
 
     def batch(self, methods):
         """

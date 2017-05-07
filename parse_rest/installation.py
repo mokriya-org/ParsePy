@@ -17,7 +17,7 @@ from parse_rest.query import QueryManager
 
 
 class Installation(ParseResource):
-    ENDPOINT_ROOT = '/'.join([API_ROOT, 'installations'])
+    ENDPOINT_PATH = 'installations'
 
     @classmethod
     def _get_installation_url(cls, installation_id):
@@ -50,7 +50,7 @@ class Installation(ParseResource):
 
 
 class Push(ParseResource):
-    ENDPOINT_ROOT = '/'.join([API_ROOT, 'push'])
+    ENDPOINT_PATH = 'push'
 
     @classmethod
     def _send(cls, data, where=None, **kw):

@@ -3,7 +3,7 @@ from parse_rest.datatypes import ParseResource
 
 
 class Config(ParseResource):
-    ENDPOINT_ROOT = '/'.join([API_ROOT, 'config'])
+    ENDPOINT_PATH = 'config'
 
     @classmethod
     def get(cls):

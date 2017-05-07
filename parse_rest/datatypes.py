@@ -296,7 +296,7 @@ class GeoPoint(ParseType):
 
 @complex_type()
 class File(ParseType, ParseBase):
-    ENDPOINT_ROOT = '/'.join([API_ROOT, 'files'])
+    ENDPOINT_PATH = 'files'
 
     @classmethod
     def from_native(cls, **kw):
@@ -398,7 +398,7 @@ class ACL(ParseType):
 
 
 class Function(ParseBase):
-    ENDPOINT_ROOT = '/'.join((API_ROOT, 'functions'))
+    ENDPOINT_PATH = 'functions'
 
     def __init__(self, name):
         self.name = name
@@ -407,7 +407,7 @@ class Function(ParseBase):
         return self.POST('/' + self.name, **kwargs)
 
 class Job(ParseBase):
-    ENDPOINT_ROOT = '/'.join((API_ROOT, 'jobs'))
+    ENDPOINT_PATH = 'jobs'
 
     def __init__(self, name):
         self.name = name
@@ -523,7 +523,7 @@ class ObjectMetaclass(type):
 
 
 class Object(six.with_metaclass(ObjectMetaclass, ParseResource)):
-    ENDPOINT_ROOT = '/'.join([API_ROOT, 'classes'])
+    ENDPOINT_PATH = 'classes'
 
     @classmethod
     def factory(cls, class_name):
@@ -543,10 +543,7 @@ class Object(six.with_metaclass(ObjectMetaclass, ParseResource)):
 
     @classmethod
     def set_endpoint_root(cls):
-        root = '/'.join([API_ROOT, 'classes', cls.__name__])
-        if cls.ENDPOINT_ROOT != root:
-            cls.ENDPOINT_ROOT = root
-        return cls.ENDPOINT_ROOT
+        cls.ENDPOINT_PATH = 'classes/%s' % cls.__name__
 
     @classmethod
     def schema(cls):
