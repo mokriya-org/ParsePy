@@ -30,12 +30,9 @@ ACCESS_KEYS = {}
 CONNECTION_TIMEOUT = 60
 
 
-def register(app_id, rest_key, **kw):
+def register(app_id, **kw):
     global ACCESS_KEYS
-    ACCESS_KEYS = {
-        'app_id': app_id,
-        'rest_key': rest_key
-        }
+    ACCESS_KEYS = { 'app_id': app_id, }
     ACCESS_KEYS.update(**kw)
 
 
@@ -96,8 +93,8 @@ class ParseBase(object):
                 ret["body"] = kw
             return ret
 
-        if not ('app_id' in ACCESS_KEYS and 'rest_key' in ACCESS_KEYS):
-            raise core.ParseError('Missing connection credentials')
+        if not ('app_id' in ACCESS_KEYS):
+            raise core.ParseError('Missing app id')
 
         app_id = ACCESS_KEYS.get('app_id')
         rest_key = ACCESS_KEYS.get('rest_key')
@@ -120,7 +117,6 @@ class ParseBase(object):
         headers = {
             'Content-type': 'application/json',
             'X-Parse-Application-Id': app_id,
-            'X-Parse-REST-API-Key': rest_key
         }
         headers.update(extra_headers or {})
 
@@ -133,6 +129,8 @@ class ParseBase(object):
             request.add_header('X-Parse-Session-Token', ACCESS_KEYS.get('session_token'))
         elif master_key:
             request.add_header('X-Parse-Master-Key', master_key)
+        elif rest_key:
+            request.add_header('X-Parse-REST-API-Key', rest_key)
 
         request.get_method = lambda: http_verb
 
