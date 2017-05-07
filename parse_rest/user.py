@@ -79,6 +79,7 @@ class User(ParseResource):
     def signup(cls, username, password, **kw):
         response_data = User.POST('', username=username, password=password, **kw)
         response_data.update({'username': username})
+        response_data.update(kw)
         return cls(**response_data)
 
     @classmethod
