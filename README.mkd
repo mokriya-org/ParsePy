@@ -691,6 +691,7 @@ from parse_rest.user import User
 
 u = User.login('dhelmet', '12345')
 
+gameScore.ACL = ACL()
 gameScore.ACL.set_user(u, read=True, write=True)
 # allows user 'dhelmet' to read and write to gameScore
 gameScore.ACL.set_default(read=True)
@@ -710,6 +711,7 @@ from parse_rest.role import Role
 from parse_rest.datatypes import ACL
 
 admin_role = Role(name='moderators')
+admin_role.ACL = ACL()
 admin_role.ACL.set_default(read=True)
 admin_role.save()
 ~~~~~
