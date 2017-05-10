@@ -415,7 +415,32 @@ all_scores = GameScore.Query.all()
 
 Querysets are _lazily evaluated_, meaning that it will only actually
 make a request to Parse when you either call a method that needs to
-operate on the data, or when you iterate on the Queryset.
+operate on the data, or when you iterate on the Queryset.  Note that this
+can sometimes result in surprising behavior when used with the SessionToken
+and MasterKey context managers, documented below, which both manipulate
+global connection parameters:
+
+~~~~~ {python}
+with SessionToken(token):
+    query = GameScore.Query.all()   # query not evaluated
+
+for gs in query:        # query issued without session token
+    do_something(gs)    # won't work as expected!
+
+~~~~~
+
+If you need to make a query with a specific session token, make sure that
+the query object is actually evaluted in the desired context:
+
+~~~~~ {python}
+with SessionToken(token):
+    # force query evaluation to issue request with desired session token
+    query = list(GameScore.Query.all())
+
+for gs in query:        # now already has expected data
+    do_something(gs)
+~~~~~
+
 
 #### Filtering
 
